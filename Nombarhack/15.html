@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1win Aviator Hack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00f7ff;
+            --secondary: #ff00e6;
+            --dark: #0a0a20;
+            --darker: #050510;
+            --warning: #ff3d3d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        body {
+            background: var(--darker);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 247, 255, 0.05) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 230, 0.05) 0%, transparent 25%);
+        }
+
+        /* HEADER */
+        .header {
+            width: 100%;
+            padding: 12px;
+            text-align: center;
+            background: rgba(10, 10, 30, 0.9);
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* MAIN CONTAINER */
+        .main-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        /* ANIMATION AREA */
+        .animation-area {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            border-radius: 12px;
+            background: rgba(0, 5, 20, 0.6);
+            border: 1px solid rgba(0, 247, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.1);
+        }
+
+        /* ROTATING RAYS EFFECT */
+        .rotating-rays {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: 
+                conic-gradient(
+                    from 0deg,
+                    transparent 0%,
+                    rgba(0, 247, 255, 0.1) 10%,
+                    transparent 20%,
+                    rgba(255, 0, 230, 0.1) 30%,
+                    transparent 40%,
+                    rgba(0, 247, 255, 0.1) 50%,
+                    transparent 60%,
+                    rgba(255, 0, 230, 0.1) 70%,
+                    transparent 80%,
+                    rgba(0, 247, 255, 0.1) 90%,
+                    transparent 100%
+                );
+            z-index: 1;
+            animation: rotateRays 20s linear infinite;
+        }
+
+        .plane {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2300f7ff"><path d="M22 16.21v-1.895L14 8V4a2 2 0 0 0-4 0v4l-8 6.315v1.895l8-2.526V18l-2 2v2l3.5-1 3.5 1v-2l-2-2v-4.316l8 2.526z"/></svg>');
+            background-size: contain;
+            filter: drop-shadow(0 0 8px rgba(0, 247, 255, 0.8));
+            z-index: 10;
+            transform: rotate(45deg);
+        }
+
+        /* CENTERED MULTIPLIER DISPLAY */
+        .multiplier-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            z-index: 5;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 25px;
+            border-radius: 50px;
+            box-shadow: 0 0 25px rgba(0, 247, 255, 0.5);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* START BUTTON */
+        .start-button-container {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .btn-predict {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(90deg, #00ff88, #00ffcc);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            color: #121212;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-predict:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* WARNING MESSAGE */
+        .warning-box {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(255, 61, 61, 0.15);
+            border: 1px solid var(--warning);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        /* ACTION BUTTONS */
+        .action-buttons {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 40px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-register {
+            background: linear-gradient(90deg, var(--primary), #0066ff);
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.4);
+        }
+
+        .btn-telegram {
+            background: linear-gradient(90deg, #0088ff, #8800ff);
+            box-shadow: 0 0 15px rgba(136, 0, 255, 0.4);
+        }
+
+        .btn-support {
+            background: linear-gradient(90deg, #ff00cc, #ff0066);
+            box-shadow: 0 0 15px rgba(255, 0, 102, 0.4);
+        }
+
+        /* ANIMATIONS */
+        @keyframes rotateRays {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes planeGlow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(0, 247, 255, 0.8)); }
+            50% { filter: drop-shadow(0 0 15px rgba(0, 247, 255, 1)); }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <h1>1win Aviator Hack</h1>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-container">
+        <!-- ANIMATION AREA -->
+        <div class="animation-area">
+            <div class="rotating-rays"></div>
+            <div class="multiplier-display" id="multiplierDisplay">1.00x</div>
+            <div class="plane" id="plane"></div>
+        </div>
+
+        <!-- START BUTTON -->
+        <div class="start-button-container">
+            <button class="btn-predict" id="predictBtn">
+                <i class="fas fa-rocket"></i> START Hack
+            </button>
+        </div>
+
+        <!-- WARNING MESSAGE -->
+        <div class="warning-box">
+            <i class="fas fa-exclamation-triangle"></i> Create a new 1win account by clicking on 'Register' button, if you use this mod in your old account, then mod will not work.
+'रजिस्टर' बटन पर क्लिक करके एक नया account बनाएं, यदि आप इस मॉड का उपयोग अपने पुराने account में करते हैं, तो मॉड काम नहीं करेगा।
+Promo Code = FREEMOD
+(कृपया बोनस के लिए प्रोमो कोड का उपयोग करें) <i class="fas fa-exclamation-triangle"></i>
+        </div>
+
+        <!-- ACTION BUTTONS WITH WORKING LINKS -->
+        <div class="action-buttons">
+            <button class="btn btn-register" id="registerBtn">
+                <i class="fas fa-user-plus"></i> REGISTER ACCOUNT
+            </button>
+            <button class="btn btn-telegram" id="telegramBtn">
+                <i class="fab fa-telegram"></i> JOIN TELEGRAM
+            </button>
+            <button class="btn btn-support" id="supportBtn">
+                <i class="fas fa-headset"></i> CUSTOMER SUPPORT
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const predictBtn = document.getElementById('predictBtn');
+        const plane = document.getElementById('plane');
+        const multiplierDisplay = document.getElementById('multiplierDisplay');
+        const registerBtn = document.getElementById('registerBtn');
+        const telegramBtn = document.getElementById('telegramBtn');
+        const supportBtn = document.getElementById('supportBtn');
+
+        let isAnimating = false;
+
+        // Function to open URL in external browser
+        function openInExternalBrowser(url) {
+            // Try using Android intent
+            if (typeof Android !== 'undefined' && Android.openInExternalBrowser) {
+                Android.openInExternalBrowser(url);
+            } 
+            // Fallback for other cases
+            else {
+                window.open(url, '_system');
+            }
+        }
+
+        function startPrediction() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            // Disable button during animation
+            predictBtn.disabled = true;
+            predictBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PREDICTING...';
+            
+            // Reset positions
+            plane.style.bottom = '15px';
+            plane.style.left = '15px';
+            multiplierDisplay.textContent = '1.00x';
+            
+            // Generate random multiplier (1.00x - 3.00x)
+            const finalMultiplier = (Math.random() * 2 + 1).toFixed(2);
+            const animationDuration = 2000; // 2 seconds
+            
+            const startTime = Date.now();
+            
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / animationDuration, 1);
+                
+                // Calculate current multiplier
+                const currentMultiplier = (1 + (finalMultiplier - 1) * Math.pow(progress, 0.7)).toFixed(2);
+                multiplierDisplay.textContent = `${currentMultiplier}x`;
+                
+                // Move plane diagonally (constrained)
+                const maxRight = window.innerWidth * 0.7 - 50;
+                const maxTop = 150;
+                
+                plane.style.left = `${15 + (progress * maxRight)}px`;
+                plane.style.bottom = `${15 + (progress * maxTop)}px`;
+                
+                // Plane glow effect
+                plane.style.animation = 'planeGlow 0.5s infinite';
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Animation complete
+                    plane.style.animation = 'none';
+                    
+                    // Enable button after 4 seconds total
+                    setTimeout(() => {
+                        predictBtn.disabled = false;
+                        predictBtn.innerHTML = '<i class="fas fa-rocket"></i> START PREDICTION';
+                        isAnimating = false;
+                    }, 2000);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Event listeners
+        predictBtn.addEventListener('click', startPrediction);
+        
+        registerBtn.addEventListener('click', () => {
+            openInExternalBrowser('https://colorsignup.github.io/ES1/1win');
+        });
+        
+        telegramBtn.addEventListener('click', () => {
+            openInExternalBrowser('https://telegram.dog/EarningScripter1');
+        });
+        
+        supportBtn.addEventListener('click', () => {
+            openInExternalBrowser('https://telegram.dog/EarningScripter1_Bot');
+        });
+    </script>
+</body>
+</html>

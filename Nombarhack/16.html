@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Tiger Hack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* [Previous CSS remains exactly the same] */
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-pink: #ff00e6;
+            --neon-purple: #8a2be2;
+            --dark-bg: #0a0a1a;
+            --darker-bg: #050510;
+            --card-bg: rgba(20, 20, 40, 0.7);
+            --text-light: #f0f0ff;
+            --text-dim: #b0b0ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
+
+        body {
+            background: linear-gradient(135deg, var(--darker-bg), var(--dark-bg));
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            border-radius: 50%;
+            filter: blur(1px);
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 0 5px var(--neon-blue));
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,242,255,0.05) 0%, transparent 70%);
+            animation: rotate 15s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .winning-user {
+            font-size: 15px;
+            color: var(--neon-pink);
+            margin-bottom: 8px;
+            text-align: center;
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(255, 0, 230, 0.3);
+        }
+
+        .online-users {
+            font-size: 13px;
+            color: var(--text-dim);
+            text-align: center;
+        }
+
+        /* Card Flip Animation */
+        .card-container {
+            perspective: 1000px;
+            margin: 30px auto;
+            width: 150px;
+            height: 200px;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+        }
+
+        .card-back {
+            background: var(--dark-bg);
+            color: white;
+            transform: rotateY(180deg);
+            border: 2px solid;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .card-back.dragon {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 20px var(--neon-pink);
+        }
+
+        .card-back.tiger {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .dragon .card-icon {
+            color: var(--neon-pink);
+        }
+
+        .tiger .card-icon {
+            color: var(--neon-blue);
+        }
+
+        /* Prediction Card */
+        .prediction-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .prediction-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+            animation: borderGlow 3s infinite alternate;
+        }
+
+        @keyframes borderGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        .server-status {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--neon-blue);
+            justify-content: center;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 10px var(--neon-blue);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px var(--neon-blue); }
+            50% { box-shadow: 0 0 15px var(--neon-blue); }
+            100% { box-shadow: 0 0 5px var(--neon-blue); }
+        }
+
+        .result-container {
+            margin: 25px 0;
+            min-height: 50px;
+        }
+
+        .result-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+            animation: textGlow 2s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 5px var(--neon-blue); }
+            100% { text-shadow: 0 0 15px var(--neon-blue); }
+        }
+
+        /* Glowing Buttons */
+        .btn {
+            display: inline-block;
+            padding: 14px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(transparent, rgba(0, 242, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(0, 242, 255, 0.2), rgba(138, 43, 226, 0.2));
+            color: var(--neon-blue);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, rgba(255, 0, 230, 0.2), rgba(138, 43, 226, 0.2));
+            color: var(--neon-pink);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 10px rgba(255, 0, 230, 0.3);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 0 20px var(--neon-pink);
+        }
+
+        .btn-telegram {
+            background: linear-gradient(135deg, rgba(0, 136, 204, 0.2), rgba(138, 43, 226, 0.2));
+            color: #0088cc;
+            border-color: #0088cc;
+            box-shadow: 0 0 10px rgba(0, 136, 204, 0.3);
+        }
+
+        .btn-telegram:hover {
+            box-shadow: 0 0 20px #0088cc;
+        }
+
+        .warning-text {
+            color: #FF0000;
+            font-size: 13px;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 5px rgba(255, 0, 230, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .title {
+                font-size: 24px;
+            }
+            
+            .prediction-card {
+                padding: 20px;
+            }
+            
+            .card-container {
+                width: 120px;
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <img src="logo16.png" alt="Dragon Tiger Logo">
+            </div>
+            <h1 class="title">Dragon Tiger Hack</h1>
+            <p class="subtitle">Use hack and earn money 🤑</p>
+        </div>
+        
+        <!-- Stats Section -->
+        <div class="stats">
+            <div class="winning-user" id="winning-user"></div>
+            <div class="online-users" id="online-users"></div>
+        </div>
+        
+        <!-- Prediction Card -->
+        <div class="prediction-card">
+            <div class="server-status">
+                <div class="status-dot"></div>
+                <div class="status-text">Server: Active</div>
+            </div>
+            
+            <!-- Card Flip Container -->
+            <div class="card-container">
+                <div class="card" id="prediction-card">
+                    <div class="card-face card-front">
+                        <i class="fas fa-question"></i>
+                    </div>
+                    <div class="card-face card-back" id="card-back">
+                        <!-- Result will appear here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-container">
+                <div class="result-value" id="result">Ready to predict</div>
+            </div>
+            
+            <button class="btn btn-primary" id="start-btn">
+                <i class="fas fa-play"></i> Start Hack
+            </button>
+            
+            <div class="warning-text">
+                <i class="fas fa-exclamation-circle"></i> Download Yono Game game by clicking on 'Register' button and create a new account in it, if you use this mod in your old account or in any other app then the mod will not work.
+'Register' बटन पर क्लिक करके Yono Game डाउनलोड करें और उसमे एक नया अकाउंट बनाए, यदि आप इस मॉड का उपयोग अपने पुराने account में करते हैं यां किसी और ऐप में करते है तो मॉड काम नहीं करेगा।
+            </div>
+            
+            <button class="btn btn-danger" id="download-btn">
+                <i class="fas fa-download"></i> Download App
+            </button>
+            
+            <button class="btn btn-telegram" id="telegram-btn">
+                <i class="fab fa-telegram"></i> Join Telegram
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const winningUserEl = document.getElementById('winning-user');
+        const onlineUsersEl = document.getElementById('online-users');
+        const resultEl = document.getElementById('result');
+        const startBtn = document.getElementById('start-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const telegramBtn = document.getElementById('telegram-btn');
+        const predictionCard = document.getElementById('prediction-card');
+        const cardBack = document.getElementById('card-back');
+        
+        // Track animation state
+        let isAnimating = false;
+        let currentWinner = null;
+        
+        // Function to open URL in external browser
+        function openInExternalBrowser(url) {
+            // Try using Android intent
+            if (typeof Android !== 'undefined' && Android.openInExternalBrowser) {
+                Android.openInExternalBrowser(url);
+            } 
+            // Fallback for other cases
+            else {
+                window.open(url, '_system');
+            }
+        }
+        
+        // Generate random number
+        function getRandom(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        // Update winning user
+        function updateRandomData() {
+            const firstPart = getRandom(620, 999);
+            const secondPart = getRandom(0, 999).toString().padStart(3, '0');
+            const amount = getRandom(500, 15000);
+            
+            winningUserEl.textContent = `VIP ${firstPart}****${secondPart} won ₹${amount.toLocaleString()}`;
+            onlineUsersEl.textContent = `${getRandom(500, 7000).toLocaleString()} players online`;
+        }
+        
+        // Reset card to front position
+        function resetCard() {
+            return new Promise((resolve) => {
+                if (predictionCard.classList.contains('flipped')) {
+                    predictionCard.classList.remove('flipped');
+                    setTimeout(resolve, 400); // Wait for unflip animation
+                } else {
+                    resolve();
+                }
+            });
+        }
+        
+        // Flip card animation
+        async function flipCard(winner) {
+            if (isAnimating) return;
+            isAnimating = true;
+            currentWinner = winner;
+            
+            // Hide button during animation
+            startBtn.disabled = true;
+            startBtn.style.display = 'none';
+            
+            // Reset to front first
+            await resetCard();
+            
+            // Prepare card back content
+            cardBack.className = 'card-face card-back';
+            cardBack.innerHTML = '';
+            
+            if (winner === 'Dragon') {
+                cardBack.classList.add('dragon');
+                cardBack.innerHTML = `
+                    <div class="card-icon"><i class="fas fa-dragon"></i></div>
+                    <div>DRAGON</div>
+                `;
+            } else {
+                cardBack.classList.add('tiger');
+                cardBack.innerHTML = `
+                    <div class="card-icon"><i class="fas fa-paw"></i></div>
+                    <div>TIGER</div>
+                `;
+            }
+            
+            // Show predicting status
+            resultEl.textContent = "Predicting...";
+            resultEl.style.color = "var(--text-dim)";
+            
+            // Wait a moment before flipping
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Flip the card
+            predictionCard.classList.add('flipped');
+            
+            // Show final result
+            resultEl.textContent = `${winner} Wins!`;
+            resultEl.style.color = winner === 'Dragon' ? 'var(--neon-pink)' : 'var(--neon-blue)';
+            
+            // Wait for animation to complete
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            // Re-enable button after cooldown
+            setTimeout(() => {
+                startBtn.disabled = false;
+                startBtn.style.display = 'inline-block';
+                isAnimating = false;
+            }, 4000);
+        }
+        
+        // Initial update
+        updateRandomData();
+        
+        // Update every 2 seconds
+        setInterval(updateRandomData, 2000);
+        
+        // Start prediction
+        startBtn.addEventListener('click', () => {
+            const winner = Math.random() > 0.5 ? 'Dragon' : 'Tiger';
+            flipCard(winner);
+        });
+        
+        // Button actions
+        downloadBtn.addEventListener('click', () => {
+            openInExternalBrowser('https://yonovip2.com?code=3CRYC2X845Z&t=1745427321');
+        });
+        
+        telegramBtn.addEventListener('click', () => {
+            openInExternalBrowser('https://t.me/EarningScripter1');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --gold: #FFD700;
+            --dark-gold: #C5A100;
+            --light-gold: #FFEEAA;
+            --bg-color: #110d15;
+            --card-bg: #1a1520;
+            --text-color: #ffffff;
+            --error-color: #ff3860;
+            --warning-color: #ffcc00;
+            --success-color: #00ff7f;
+            --violet: #9400D3;
+            --green: #00FF00;
+            --red: #FF0000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, var(--bg-color) 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        /* Online Users */
+        .online-users {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        /* Winning User */
+        .winning-user {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 12px;
+            color: var(--gold);
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            animation: glow 2s infinite alternate;
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+            }
+            to {
+                text-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+            }
+        }
+        
+        .game-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-top: 50px;
+        }
+        
+        .game-logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            padding: 4px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-logo::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 20%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0) 80%
+            );
+            transform: rotate(30deg);
+            animation: shimmer 3s infinite;
+        }
+        
+        .game-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gold);
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            position: relative;
+        }
+        
+        .game-name::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            animation: underline-glow 2s infinite;
+        }
+        
+        @keyframes underline-glow {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+        
+        /* Scrolling Text */
+        .scrolling-text {
+            white-space: nowrap;
+            overflow: hidden;
+            color: var(--gold);
+            font-size: 12px;
+            margin: 10px 0;
+            position: relative;
+            height: 20px;
+        }
+        
+        .scrolling-text span {
+            position: absolute;
+            animation: scrollText 15s linear infinite;
+        }
+        
+        @keyframes scrollText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* Result Options */
+        .result-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 10px 0;
+        }
+        
+        .result-option {
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            color: var(--gold);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
+        }
+        
+        .result-option:hover {
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+        }
+        
+        .result-option.selected {
+            background: var(--gold);
+            color: #000;
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        }
+        
+        /* Prediction Container */
+        .prediction-container {
+            background: linear-gradient(145deg, #1a1520, #2a2130);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .prediction-container::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 20%,
+                rgba(255, 255, 255, 0.05) 50%,
+                rgba(255, 255, 255, 0) 80%
+            );
+            transform: rotate(30deg);
+            animation: shimmer 3s infinite;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .input-group label {
+            font-size: 14px;
+            color: var(--gold);
+            font-weight: 500;
+        }
+        
+        .input-group input {
+            padding: 10px 12px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gold);
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            border-color: var(--light-gold);
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+        
+        .input-group input.error {
+            border-color: var(--error-color);
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .period-error {
+            color: var(--error-color);
+            font-size: 12px;
+            text-align: center;
+            margin-top: -10px;
+            display: none;
+        }
+        
+        .result-container {
+            min-height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px dashed var(--gold);
+            position: relative;
+        }
+        
+        .result-digit {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            position: absolute;
+            animation: mixing 1s infinite, fadeInOut 1s infinite;
+            opacity: 0;
+        }
+        
+        @keyframes mixing {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(8px, -8px) rotate(8deg); }
+            50% { transform: translate(-8px, 8px) rotate(-8deg); }
+            75% { transform: translate(4px, -4px) rotate(4deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        .final-result {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .final-digit {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            animation: digitAppear 0.5s ease-out;
+        }
+        
+        @keyframes digitAppear {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Text Result Styles */
+        .text-result {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            animation: textAppear 0.5s ease-out;
+        }
+        
+        .small {
+            font-size: 16px;
+        }
+        
+        .big {
+            font-size: 22px;
+        }
+        
+        .violet {
+            color: var(--violet);
+        }
+        
+        .green {
+            color: var(--green);
+        }
+        
+        .red {
+            color: var(--red);
+        }
+        
+        @keyframes textAppear {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .start-btn {
+            padding: 12px;
+            background: linear-gradient(to right, var(--gold), var(--dark-gold));
+            color: #000;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .start-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 20%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0) 80%
+            );
+            transform: rotate(30deg);
+            animation: shimmer 2s infinite;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(255, 215, 0, 0.5);
+        }
+        
+        .start-btn:active {
+            transform: translateY(1px);
+        }
+        
+        /* Warning Text */
+        .warning-text {
+            color: var(--warning-color);
+            text-align: center;
+            font-size: 13px;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px dashed var(--warning-color);
+            border-radius: 6px;
+            background-color: rgba(255, 204, 0, 0.1);
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 10px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to right, var(--gold), var(--dark-gold));
+            color: #000;
+            width: 100%;
+        }
+        
+        .action-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 20%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0) 80%
+            );
+            transform: rotate(30deg);
+            animation: shimmer 3s infinite;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+        }
+        
+        .action-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .action-btn i {
+            font-size: 16px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+                gap: 12px;
+            }
+            
+            .result-digit, .final-digit {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .online-users, .winning-user {
+                top: 10px;
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+            
+            .online-users {
+                left: 10px;
+            }
+            
+            .winning-user {
+                right: 10px;
+            }
+            
+            .game-info {
+                margin-top: 40px;
+            }
+            
+            .result-options {
+                gap: 10px;
+            }
+            
+            .result-option {
+                font-size: 11px;
+                padding: 5px 10px;
+            }
+            
+            .scrolling-text {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="online-users" id="onlineUsers"></div>
+    <div class="winning-user" id="winningUser"></div>
+    
+    <div class="container">
+        <div class="game-info">
+            <img src="logo11.png" alt="Game Logo" class="game-logo" id="gameLogo">
+            <div class="game-name" id="gameName">Goa Games Hack</div>
+        </div>
+        
+        <div class="scrolling-text">
+            <span>⚠️ Note :- Create a new account by clicking on below "Register" button, otherwise hack will not work perfectly.</span>
+        </div>
+        
+        <div class="result-options">
+            <div class="result-option selected" id="showAllOption">Show Only Number</div>
+            <div class="result-option" id="showNumberOption">Show Everything</div>
+        </div>
+        
+        <div class="prediction-container" id="predictionContainer">
+            <div class="input-group">
+                <label for="periodNumber">Enter Period Number</label>
+                <input type="number" id="periodNumber" placeholder="e.g. 123456">
+                <div class="period-error" id="periodError">This period number has already been used!</div>
+            </div>
+            
+            <div class="result-container" id="resultContainer">
+                <div id="animationContainer"></div>
+                <div class="final-result" id="finalResult"></div>
+                <div id="textResult" class="text-result" style="display: none;"></div>
+            </div>
+            
+            <button class="start-btn" id="startBtn">Start Prediction</button>
+        </div>
+        
+        <div class="warning-text">
+            <i class="fas fa-exclamation-triangle"></i>Create a new account by clicking on 'Register' button, if you use this hack in your old account, then hack will not work perfectly.
+'Register' बटन पर क्लिक करके एक नया account बनाएं, यदि आप इस हैक का उपयोग अपने पुराने account में करते हैं, तो आपका loss हों सकता है।
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-btn" id="registerBtn">
+                <i class="fas fa-user-plus"></i> Register
+            </button>
+            <button class="action-btn" id="telegramBtn">
+                <i class="fab fa-telegram"></i> Join Telegram
+            </button>
+            <button class="action-btn" id="supportBtn">
+                <i class="fas fa-headset"></i> Customer Support
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Track used period numbers
+        const usedPeriods = new Set();
+        let showAllMode = true;
+        
+        // Function to get unique random numbers
+        function getUniqueRandomNumbers(count, max) {
+            const numbers = new Set();
+            while (numbers.size < count) {
+                numbers.add(Math.floor(Math.random() * max));
+            }
+            return Array.from(numbers);
+        }
+
+        // Update online users
+        function updateOnlineUsers() {
+            const randomUsers = Math.floor(Math.random() * (999 - 100 + 1)) + 100;
+            document.getElementById('onlineUsers').textContent = `👥 ${randomUsers} Online`;
+        }
+
+        // Update winning user
+        function updateWinningUser() {
+            const randomUser1 = Math.floor(Math.random() * (999 - 620 + 1)) + 620;
+            const randomUser2 = Math.floor(Math.random() * (999 - 1 + 1)) + 1;
+            const randomAmount = Math.floor(Math.random() * (30000 - 500 + 1)) + 500;
+            document.getElementById('winningUser').textContent = `User ${randomUser1}****${String(randomUser2).padStart(3, '0')} Win ₹${randomAmount.toLocaleString()}`;
+        }
+
+        // Get random text result
+        function getRandomTextResult() {
+            const results = [
+                { number: 0, size: 'small', color: 'violet' },
+                { number: 1, size: 'small', color: 'green' },
+                { number: 2, size: 'small', color: 'red' },
+                { number: 3, size: 'small', color: 'green' },
+                { number: 4, size: 'small', color: 'red' },
+                { number: 5, size: 'big', color: 'violet' },
+                { number: 6, size: 'big', color: 'red' },
+                { number: 7, size: 'big', color: 'green' },
+                { number: 8, size: 'big', color: 'red' },
+                { number: 9, size: 'big', color: 'green' }
+            ];
+            
+            const randomIndex = Math.floor(Math.random() * results.length);
+            return results[randomIndex];
+        }
+
+        // Start prediction
+        function startPrediction() {
+            const periodNumber = document.getElementById('periodNumber').value.trim();
+            const periodError = document.getElementById('periodError');
+            
+            if (!periodNumber) {
+                // Show error if period number is empty
+                document.getElementById('periodNumber').classList.add('error');
+                setTimeout(() => {
+                    document.getElementById('periodNumber').classList.remove('error');
+                }, 500);
+                periodError.style.display = 'none';
+                return;
+            }
+            
+            // Check if period number was already used
+            if (usedPeriods.has(periodNumber)) {
+                periodError.style.display = 'block';
+                return;
+            }
+            
+            // Hide error if showing
+            periodError.style.display = 'none';
+            
+            // Add to used periods
+            usedPeriods.add(periodNumber);
+
+            // Clear previous results
+            document.getElementById('animationContainer').innerHTML = '';
+            document.getElementById('finalResult').innerHTML = '';
+            document.getElementById('textResult').style.display = 'none';
+            document.getElementById('textResult').innerHTML = '';
+
+            // Disable button during animation
+            document.getElementById('startBtn').disabled = true;
+
+            if (showAllMode) {
+                // Show mixing animation
+                for (let i = 0; i < 15; i++) {
+                    const img = document.createElement('img');
+                    const randomDigit = Math.floor(Math.random() * 10);
+                    img.src = `${randomDigit}.png`;
+                    img.className = 'result-digit';
+                    img.style.left = `${Math.random() * 80}%`;
+                    img.style.top = `${Math.random() * 80}%`;
+                    img.style.animationDelay = `${i * 0.1}s`;
+                    document.getElementById('animationContainer').appendChild(img);
+                }
+
+                // After 2 seconds, show final result
+                setTimeout(() => {
+                    document.getElementById('animationContainer').innerHTML = '';
+                    
+                    // Generate 5 unique random digits
+                    const uniqueDigits = getUniqueRandomNumbers(5, 10);
+                    const finalResult = document.getElementById('finalResult');
+                    finalResult.innerHTML = '';
+                    
+                    for (let i = 0; i < 5; i++) {
+                        const img = document.createElement('img');
+                        img.src = `${uniqueDigits[i]}.png`;
+                        img.className = 'final-digit';
+                        img.style.animationDelay = `${i * 0.1}s`;
+                        finalResult.appendChild(img);
+                    }
+                    
+                    document.getElementById('startBtn').disabled = false;
+                }, 2000);
+            } else {
+                // Show text result animation
+                const textResult = document.getElementById('textResult');
+                textResult.style.display = 'block';
+                
+                // Simple countdown animation
+                let count = 3;
+                const countdown = setInterval(() => {
+                    if (count > 0) {
+                        textResult.innerHTML = `Result in ${count}...`;
+                        count--;
+                    } else {
+                        clearInterval(countdown);
+                        const result = getRandomTextResult();
+                        textResult.innerHTML = `${result.number} (${result.size}) <span class="${result.color}">${result.color}</span>`;
+                        textResult.className = `text-result ${result.size} ${result.color}`;
+                        document.getElementById('startBtn').disabled = false;
+                    }
+                }, 500);
+            }
+        }
+
+        // Function to open URL in external browser
+        function openInExternalBrowser(url) {
+            // Try using Android intent
+            if (typeof Android !== 'undefined' && Android.openInExternalBrowser) {
+                Android.openInExternalBrowser(url);
+            } 
+            // Fallback for other cases
+            else {
+                window.open(url, '_system');
+            }
+        }
+
+        // Initialize the app
+        function init() {
+            // Update online users every 5 seconds
+            updateOnlineUsers();
+            setInterval(updateOnlineUsers, 5000);
+            
+            // Update winning user every 2 seconds
+            updateWinningUser();
+            setInterval(updateWinningUser, 2000);
+
+            // Add event listeners
+            document.getElementById('startBtn').addEventListener('click', startPrediction);
+            document.getElementById('registerBtn').addEventListener('click', () => {
+                openInExternalBrowser("https://colorsignup.github.io/ES1/Goagames");
+            });
+            document.getElementById('telegramBtn').addEventListener('click', () => {
+                openInExternalBrowser('https://telegram.dog/EarningScripter1');
+            });
+            document.getElementById('supportBtn').addEventListener('click', () => {
+                openInExternalBrowser('https://telegram.dog/EarningScripter1_bot');
+            });
+            
+            // Clear error when typing in period number
+            document.getElementById('periodNumber').addEventListener('input', function() {
+                document.getElementById('periodError').style.display = 'none';
+            });
+            
+            // Result options toggle
+            document.getElementById('showAllOption').addEventListener('click', function() {
+                if (!showAllMode) {
+                    showAllMode = true;
+                    this.classList.add('selected');
+                    document.getElementById('showNumberOption').classList.remove('selected');
+                }
+            });
+            
+            document.getElementById('showNumberOption').addEventListener('click', function() {
+                if (showAllMode) {
+                    showAllMode = false;
+                    this.classList.add('selected');
+                    document.getElementById('showAllOption').classList.remove('selected');
+                }
+            });
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
