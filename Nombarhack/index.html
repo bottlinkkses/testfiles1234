@@ -373,86 +373,146 @@
         // Game links remain as they were (opening in WebView)
     </script>
 </body>
-    <!-- Hack Alert Dialog -->
-<div id="hackDialog" style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.85);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-">
-    <div style="
-        background: #0a0e17;
-        border-radius: 25px;
-        padding: 30px 20px;
-        width: 90%;
-        max-width: 380px;
-        text-align: center;
-        color: white;
-        font-family: Arial, sans-serif;
-        position: relative;
-        box-shadow: 0 0 30px #00f7ff;
-        border: 4px solid transparent;
-        background-clip: padding-box;
-        animation: pulseRGB 3s infinite;
-    ">
-        <h2 style="font-size: 22px; color: #00f7ff; margin-bottom: 15px;">🔥 New Hack Available!!! 🔥</h2>
-        <p style="font-size: 16px; line-height: 1.6;">🎯 नया हैक आ गया है!<br>💰 Unlimited earning trick ready!<br>👇 नीचे बटन पर क्लिक करें और जुड़ें Telegram से!</p>
-        <button onclick="joinTelegramNow()" style="
-            background: linear-gradient(45deg, #229ED9, #0088cc);
-            border: none;
-            color: white;
-            font-weight: bold;
-            padding: 12px 25px;
-            font-size: 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 0 10px rgba(0, 247, 255, 0.4);
-            transition: all 0.3s;
-        ">
-            <img src="https://telegram.org/img/t_logo.png" style="width:20px; height:20px; vertical-align:middle; margin-right:10px;">
-            JOIN TELEGRAM
-        </button>
+    <!-- Insert this in your HTML where you want the popup -->
+
+<div class="custom-dialog-backdrop" id="promoDialog">
+  <div class="custom-dialog-box" id="step1">
+    <div class="custom-dialog-title">✨ New Hack Available!!! ✨</div>
+    <div class="custom-dialog-msg">
+      Join Telegram Now!!!<br>नया हैक आ गया है 😍<br>नीचे बटन पर क्लिक करें 👇
     </div>
+    <button class="custom-dialog-btn" id="joinTelegramBtn">
+      <img src="https://telegram.org/img/t_logo.png" alt="Telegram Logo" />
+      JOIN TELEGRAM
+    </button>
+  </div>
+
+  <div class="custom-dialog-box" id="step2" style="display:none;">
+    <div class="custom-dialog-msg" style="font-size: 20px; font-weight: bold; color: #00F7FF; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+      नीचे दिए गए username को telegram पर search करें। 👇
+    </div>
+    <div style="font-size: 26px; font-weight: 900; color: #00F7FF; user-select: text; display: flex; align-items: center; justify-content: center; gap: 10px;">
+      <span id="usernameText">@EarningScripter1</span>
+      <button id="copyBtn" title="Copy username" style="background:#00F7FF; border:none; border-radius:50%; width:35px; height:35px; cursor:pointer; font-weight:bold; color:#131A2A; box-shadow: 0 0 8px #00F7FF;">
+        📋
+      </button>
+    </div>
+    <button class="custom-dialog-btn" id="okBtnStep2" style="margin-top: 20px; width: 100%;">OK</button>
+  </div>
+
+  <div class="custom-dialog-box" id="step3" style="display:none;">
+    <div class="custom-dialog-msg" style="font-size:18px; margin-bottom: 20px; text-align: center;">
+      Success awaits for no one,<br>
+      Search <b>@EarningScripter1</b> on Telegram now and start earning! 🚀🔥
+    </div>
+    <button class="custom-dialog-btn" id="finalOkBtn" style="width: 100%;">Done</button>
+  </div>
 </div>
 
-<script>
-    function joinTelegramNow() {
-        document.getElementById('hackDialog').style.display = 'none';
-        window.open("https://t.me/Earningscripter1", "_blank");
-    }
-</script>
-
 <style>
-@keyframes pulseRGB {
+  /* Same CSS as before */
+  @keyframes glow-border {
     0% {
-        border-color: #ff0047;
-        box-shadow: 0 0 10px #ff0047;
-    }
-    25% {
-        border-color: #00f7ff;
-        box-shadow: 0 0 15px #00f7ff;
-    }
-    50% {
-        border-color: #ffcc00;
-        box-shadow: 0 0 10px #ffcc00;
-    }
-    75% {
-        border-color: #00ff6e;
-        box-shadow: 0 0 15px #00ff6e;
+      box-shadow: 0 0 5px red, 0 0 10px orange, 0 0 20px yellow, 0 0 30px green, 0 0 40px blue,
+        0 0 55px indigo, 0 0 70px violet;
     }
     100% {
-        border-color: #ff0047;
-        box-shadow: 0 0 10px #ff0047;
+      box-shadow: 0 0 20px violet, 0 0 30px indigo, 0 0 40px blue, 0 0 50px green, 0 0 60px yellow,
+        0 0 70px orange, 0 0 80px red;
     }
-}
+  }
+
+  .custom-dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .custom-dialog-box {
+    background: linear-gradient(135deg, #1e1e1e, #111);
+    border-radius: 25px;
+    padding: 30px;
+    color: white;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    border: 2px solid #00f7ff;
+    animation: glow-border 2s infinite alternate;
+    font-family: 'Arial', sans-serif;
+    box-sizing: border-box;
+  }
+
+  .custom-dialog-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #00f7ff;
+  }
+
+  .custom-dialog-msg {
+    font-size: 16px;
+    margin-bottom: 25px;
+    line-height: 1.6;
+    color: #e0e0e0;
+  }
+
+  .custom-dialog-btn {
+    background: linear-gradient(45deg, #00f7ff, #00e6ff);
+    color: #131a2a;
+    border: none;
+    padding: 12px 25px;
+    font-size: 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(0, 247, 255, 0.6);
+    transition: transform 0.3s;
+  }
+
+  .custom-dialog-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .custom-dialog-btn img {
+    width: 24px;
+    height: 24px;
+  }
 </style>
-</body>
-    @EarningScripter1
+
+<script>
+  // Step 1: Join Telegram button just changes steps, no link opening
+  document.getElementById('joinTelegramBtn').addEventListener('click', function () {
+    // No window.open here
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
+  });
+
+  // Copy username to clipboard
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    const username = document.getElementById('usernameText').innerText;
+    navigator.clipboard.writeText(username).then(() => {
+      alert('Username copied to clipboard!');
+    });
+  });
+
+  // OK button step 2 to go step 3
+  document.getElementById('okBtnStep2').addEventListener('click', function () {
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step3').style.display = 'block';
+  });
+
+  // Final Done button closes popup
+  document.getElementById('finalOkBtn').addEventListener('click', function () {
+    document.getElementById('promoDialog').style.display = 'none';
+  });
+</script>
+
 </html>
